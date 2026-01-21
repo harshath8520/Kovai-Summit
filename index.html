@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Dashboard | KOVAI SUMMIT Tracking</title>
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/kovai-summit.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h1>KOVAI <span>SUMMIT</span></h1>
+            <small style="color:var(--text-low); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; display: block;">CRM & TRACKER v1.0</small>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link active" onclick="switchView('overview', this)">
+                <i class="fa fa-th-large"></i> <span>Overview</span>
+            </a>
+            <a href="#" class="nav-link" onclick="switchView('sponsorship', this)">
+                <i class="fa fa-handshake"></i> <span>Sponsorships</span>
+            </a>
+            <a href="#" class="nav-link" onclick="switchView('team', this)">
+                <i class="fa fa-users"></i> <span>Team & KPIs</span>
+            </a>
+            <div style="margin: 2rem 0 1rem 1.2rem; font-size: 0.65rem; color: var(--text-low); text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">System</div>
+            <a href="#" class="nav-link" onclick="switchView('settings', this)">
+                <i class="fa fa-cog"></i> <span>Admin Settings</span>
+            </a>
+        </nav>
+        <div style="padding: 2rem; border-top: 1px solid var(--glass-border);">
+            <div class="metric-card" style="padding: 1.2rem; border-radius: var(--radius-md); background: rgba(112, 48, 239, 0.05);">
+                <small style="color: var(--text-low); display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 10px; letter-spacing: 1px;">Event Date</small>
+                <div id="countdown-sidebar" style="color: var(--secondary); font-weight: 700; font-size: 0.85rem;">February 1, 2026</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Viewport -->
+    <main class="main-viewport">
+        
+        <!-- Overview Section -->
+        <section id="view-overview" class="view-section active">
+            
+            <!-- Global Countdown (Top Center) -->
+            <div class="text-center mb-5 py-4">
+                <h4 style="font-size: 0.75rem; font-weight: 700; color: var(--text-low); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;">Event Velocity & Timeline</h4>
+                <div class="d-flex justify-content-center gap-5">
+                    <div class="text-center"><span id="days" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">10</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Days</small></div>
+                    <div class="text-center"><span id="hours" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">11</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Hours</small></div>
+                    <div class="text-center"><span id="mins" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">20</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Minutes</small></div>
+                    <div class="text-center"><span id="secs" style="font-size: 4rem; font-weight: 800; color: var(--secondary); line-height: 1; text-shadow: 0 0 20px rgba(219, 31, 255, 0.4);">54</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Seconds</small></div>
+                </div>
+            </div>
+
+            <header class="dash-header">
+                <div>
+                    <h2 class="mb-1">Global Overview</h2>
+                    <p class="text-white small">Real-time tracking for KOVAI SUMMIT 2026.</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge-status status-track" id="global-status">SYSTEMS ON TRACK</span>
+                </div>
+            </header>
+
+            <div class="stats-row">
+                <div class="metric-card" id="stalls-stat">
+                    <div class="metric-label">Stall Sales</div>
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="metric-value">0</div>
+                        <div class="metric-target">/ 60</div>
+                    </div>
+                    <div class="progress-tiny"><div class="progress-fill" style="width: 0%"></div></div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <small class="text-muted per-day">0/day req.</small>
+                        <span class="badge-status status-track alert-text">HEALTHY</span>
+                    </div>
+                </div>
+
+                <div class="metric-card" id="tickets-stat">
+                    <div class="metric-label">Ticket Sales</div>
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="metric-value">0</div>
+                        <div class="metric-target">/ 500</div>
+                    </div>
+                    <div class="progress-tiny"><div class="progress-fill" style="width: 0%"></div></div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <small class="text-muted per-day">0/day req.</small>
+                        <span class="badge-status status-track alert-text">HEALTHY</span>
+                    </div>
+                </div>
+
+                <div class="metric-card" id="sponsorship-stat">
+                    <div class="metric-label">Sponsorships</div>
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="metric-value">0</div>
+                        <div class="metric-target">/ 10</div>
+                    </div>
+                    <div class="progress-tiny"><div class="progress-fill" style="width: 0%"></div></div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <small class="text-muted per-day">0/day req.</small>
+                        <span class="badge-status status-track alert-text">HEALTHY</span>
+                    </div>
+                </div>
+
+                <div class="metric-card" id="reels-stat">
+                    <div class="metric-label">Reels Submitted</div>
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="metric-value">0</div>
+                        <div class="metric-target">/ 50</div>
+                    </div>
+                    <div class="progress-tiny"><div class="progress-fill" style="width: 0%"></div></div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <small class="text-muted per-day">0/day req.</small>
+                        <span class="badge-status status-track alert-text">HEALTHY</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sponsorship Section -->
+        <section id="view-sponsorship" class="view-section">
+            <header class="dash-header">
+                <div>
+                    <h2>Sponsorship Pipeline</h2>
+                    <p class="text-white small">Track and convert high-value leads.</p>
+                </div>
+                <button class="btn-premium" onclick="toggleAddSponsor()">+ NEW LEAD</button>
+            </header>
+
+            <div id="sponsor-form-area" style="display:none;" class="metric-card mb-4">
+                <form onsubmit="addSponsor(event)" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Company Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g. Acme Corp" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Tier</label>
+                        <select name="category" class="form-select">
+                            <option value="Platinum">Platinum</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Associate">Associate</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Deal Value (₹)</label>
+                        <input type="number" name="value" class="form-control" placeholder="Deal amount" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Owner</label>
+                        <select name="owner" class="form-select">
+                            <option value="Surya">Surya</option>
+                            <option value="Samuel Gurudas">Samuel</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn-premium w-100">ADD</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Organization</th>
+                            <th>Tier</th>
+                            <th>Assignee</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="sponsor-list">
+                        <!-- Loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="view-team" class="view-section">
+            <header class="dash-header">
+                <div>
+                    <h2>Team Performance</h2>
+                    <p class="text-white small">Monitoring KPIs and daily contributions.</p>
+                </div>
+            </header>
+            <div class="row g-4" id="team-grid">
+                <!-- Loaded via JS -->
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="view-settings" class="view-section">
+            <header class="dash-header">
+                <div>
+                    <h2>Admin Center</h2>
+                    <p class="text-white small">Update system-wide targets and baseline data.</p>
+                </div>
+            </header>
+            <div class="metric-card admin-settings">
+                <h5 class="mb-4 text-white">Global Target Controls</h5>
+                <div class="row g-4">
+                    <!-- Stalls -->
+                    <div class="col-md-6">
+                        <div class="p-3 mb-3" style="background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--glass-border);">
+                            <h6 class="text-white mb-3 uppercase" style="font-size: 0.7rem; letter-spacing: 2px;">Stall Sales</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Target</label>
+                                    <input type="number" id="target-stalls" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Sold</label>
+                                    <input type="number" id="sold-stalls" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tickets -->
+                    <div class="col-md-6">
+                        <div class="p-3 mb-3" style="background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--glass-border);">
+                            <h6 class="text-white mb-3 uppercase" style="font-size: 0.7rem; letter-spacing: 2px;">Ticket Sales</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Target</label>
+                                    <input type="number" id="target-tickets" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Sold</label>
+                                    <input type="number" id="sold-tickets" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sponsorships -->
+                    <div class="col-md-6">
+                        <div class="p-3 mb-3" style="background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--glass-border);">
+                            <h6 class="text-white mb-3 uppercase" style="font-size: 0.7rem; letter-spacing: 2px;">Sponsorships</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Target</label>
+                                    <input type="number" id="target-sponsorship" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Sold</label>
+                                    <input type="number" id="sold-sponsorship" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Reels -->
+                    <div class="col-md-6">
+                        <div class="p-3 mb-3" style="background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--glass-border);">
+                            <h6 class="text-white mb-3 uppercase" style="font-size: 0.7rem; letter-spacing: 2px;">Reels Submitted</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Target</label>
+                                    <input type="number" id="target-reels" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="text-white small mb-2 uppercase" style="font-size: 0.6rem;">Sold</label>
+                                    <input type="number" id="sold-reels" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Efficiency Controls -->
+                <h5 class="mt-5 mb-4 text-white">Team Performance KPIs</h5>
+                <div class="row g-4" id="admin-team-controls">
+                    <!-- Loaded via JS -->
+                </div>
+                <div class="mt-5">
+                    <button onclick="updateNumbers()" class="btn-premium px-5">UPDATE SYSTEM</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="module" src="assets/js/dashboard.js"></script>
+</body>
+</html>
