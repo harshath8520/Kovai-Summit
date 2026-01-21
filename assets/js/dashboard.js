@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Navigation Logic
+    window.toggleSidebar = () => {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.toggle('active');
+    };
+
     window.switchView = (viewId, element) => {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         const targetView = document.getElementById(`view-${viewId}`);
@@ -63,6 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         if (element) element.classList.add('active');
+
+        // Auto-close sidebar on mobile after selection
+        if (window.innerWidth <= 1024) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('active');
+        }
     };
 
     // Date/Countdown Logic
@@ -120,7 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderSponsors = () => {
         const list = document.getElementById('sponsor-list');
+        const mobileList = document.getElementById('sponsor-cards-mobile');
+        const tableContainer = document.querySelector('.data-table-container');
+
         if (!list) return;
+
+        // Desktop Table View
         list.innerHTML = state.sponsors.length ? state.sponsors.map((s, index) => `
             <tr>
                 <td><strong>${s.name}</strong></td>
@@ -128,9 +144,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${s.owner}</td>
                 <td>₹${parseInt(s.value).toLocaleString()}</td>
                 <td><span class="badge-status status-track">Lead</span></td>
-                <td><button onclick="deleteSponsor(${index})" class="btn btn-sm btn-outline-danger border-0">×</button></td>
+                <td>
+                    <button onclick="editSponsor(${index})" class="btn btn-sm btn-outline-primary border-0 me-1" title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button onclick="deleteSponsor(${index})" class="btn btn-sm btn-outline-danger border-0" title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
             </tr>
         `).join('') : '<tr><td colspan="6" class="text-center text-white py-4" style="opacity: 0.5;">No leads recorded yet.</td></tr>';
+
+        // Mobile Card View
+        if (mobileList) {
+            mobileList.innerHTML = state.sponsors.length ? state.sponsors.map((s, index) => `
+                <div class="sponsor-card-mobile">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="flex-grow-1">
+                            <h6 class="text-white mb-1" style="font-weight: 600; font-size: 1rem;">${s.name}</h6>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge-status status-track" style="font-size: 0.6rem;">${s.category} Tier</span>
+                                <span class="text-white" style="font-size: 0.75rem; opacity: 0.7;">• ${s.owner}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button onclick="editSponsor(${index})" class="btn-edit-mobile" title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button onclick="deleteSponsor(${index})" class="btn-delete-mobile" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-white" style="opacity: 0.6; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;">Deal Value</small>
+                            <div class="text-white" style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">₹${parseInt(s.value).toLocaleString()}</div>
+                        </div>
+                        <span class="badge-status status-track">Active Lead</span>
+                    </div>
+                </div>
+            `).join('') : '<div class="text-center text-white py-5" style="opacity: 0.5;">No leads recorded yet.</div>';
+        }
     };
 
     const renderTeam = () => {
@@ -227,6 +282,68 @@ document.addEventListener('DOMContentLoaded', () => {
             state.sponsors.splice(index, 1);
             state.sold.sponsorship = state.sponsors.length;
             saveState();
+        }
+    };
+
+    // Toggle Edit Form
+    window.toggleEditSponsor = () => {
+        const editArea = document.getElementById('sponsor-edit-area');
+        const addArea = document.getElementById('sponsor-form-area');
+        if (editArea) {
+            editArea.style.display = 'none';
+            // Clear form
+            document.getElementById('edit-index').value = '';
+            document.getElementById('edit-name').value = '';
+            document.getElementById('edit-category').value = 'Platinum';
+            document.getElementById('edit-value').value = '';
+            document.getElementById('edit-owner').value = 'Surya';
+        }
+        // Also hide add area if open
+        if (addArea && addArea.style.display !== 'none') {
+            addArea.style.display = 'none';
+        }
+    };
+
+    // Edit Sponsor (Load data into edit form)
+    window.editSponsor = (index) => {
+        const sponsor = state.sponsors[index];
+        if (!sponsor) return;
+
+        // Hide add form if open
+        const addArea = document.getElementById('sponsor-form-area');
+        if (addArea) addArea.style.display = 'none';
+
+        // Show edit form
+        const editArea = document.getElementById('sponsor-edit-area');
+        if (editArea) editArea.style.display = 'block';
+
+        // Populate form with current data
+        document.getElementById('edit-index').value = index;
+        document.getElementById('edit-name').value = sponsor.name;
+        document.getElementById('edit-category').value = sponsor.category;
+        document.getElementById('edit-value').value = sponsor.value;
+        document.getElementById('edit-owner').value = sponsor.owner;
+
+        // Scroll to form
+        editArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    // Update Sponsor (Save edited data)
+    window.updateSponsor = (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const index = parseInt(fd.get('index'));
+
+        if (index >= 0 && index < state.sponsors.length) {
+            state.sponsors[index] = {
+                name: fd.get('name'),
+                category: fd.get('category'),
+                value: fd.get('value'),
+                owner: fd.get('owner')
+            };
+            saveState();
+            window.toggleEditSponsor();
+            alert('Sponsor updated successfully!');
         }
     };
 

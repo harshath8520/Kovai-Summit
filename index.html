@@ -11,8 +11,18 @@
 </head>
 <body>
 
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa fa-bars"></i>
+    </button>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+        <!-- Close button for mobile -->
+        <button class="close-sidebar" onclick="toggleSidebar()">
+            <i class="fa fa-times"></i>
+        </button>
+
         <div class="sidebar-logo">
             <h1>KOVAI <span>SUMMIT</span></h1>
             <small style="color:var(--text-low); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; display: block;">CRM & TRACKER v1.0</small>
@@ -47,13 +57,13 @@
         <section id="view-overview" class="view-section active">
             
             <!-- Global Countdown (Top Center) -->
-            <div class="text-center mb-5 py-4">
-                <h4 style="font-size: 0.75rem; font-weight: 700; color: var(--text-low); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;">Event Velocity & Timeline</h4>
-                <div class="d-flex justify-content-center gap-5">
-                    <div class="text-center"><span id="days" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">10</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Days</small></div>
-                    <div class="text-center"><span id="hours" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">11</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Hours</small></div>
-                    <div class="text-center"><span id="mins" style="font-size: 4rem; font-weight: 800; color: #fff; line-height: 1;">20</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Minutes</small></div>
-                    <div class="text-center"><span id="secs" style="font-size: 4rem; font-weight: 800; color: var(--secondary); line-height: 1; text-shadow: 0 0 20px rgba(219, 31, 255, 0.4);">54</span><br><small class="text-white uppercase" style="letter-spacing: 2px; font-size: 10px; font-weight: 600; opacity: 0.7;">Seconds</small></div>
+            <div class="hero-counter-container mb-5 py-4">
+                <h4 class="hero-counter-title">Event Velocity & Timeline</h4>
+                <div class="hero-counter-grid">
+                    <div class="counter-item"><span id="days">10</span><br><small>Days</small></div>
+                    <div class="counter-item"><span id="hours">11</span><br><small>Hours</small></div>
+                    <div class="counter-item"><span id="mins">20</span><br><small>Minutes</small></div>
+                    <div class="counter-item"><span id="secs" class="text-secondary-glow">54</span><br><small>Seconds</small></div>
                 </div>
             </div>
 
@@ -133,6 +143,7 @@
             </header>
 
             <div id="sponsor-form-area" style="display:none;" class="metric-card mb-4">
+                <h6 class="text-white mb-3">Add New Lead</h6>
                 <form onsubmit="addSponsor(event)" class="row g-3">
                     <div class="col-md-4">
                         <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Company Name</label>
@@ -164,6 +175,50 @@
                 </form>
             </div>
 
+            <!-- Edit Sponsor Form -->
+            <div id="sponsor-edit-area" style="display:none;" class="metric-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-white mb-0">Edit Lead</h6>
+                    <button onclick="toggleEditSponsor()" class="btn btn-sm text-white" style="opacity: 0.7;">✕ Cancel</button>
+                </div>
+                <form onsubmit="updateSponsor(event)" class="row g-3">
+                    <input type="hidden" name="index" id="edit-index">
+                    <div class="col-md-4">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Company Name</label>
+                        <input type="text" name="name" id="edit-name" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Tier</label>
+                        <select name="category" id="edit-category" class="form-select">
+                            <option value="Platinum">Platinum</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Associate">Associate</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Deal Value (₹)</label>
+                        <input type="number" name="value" id="edit-value" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small text-white mb-2 uppercase" style="letter-spacing: 1px;">Owner</label>
+                        <select name="owner" id="edit-owner" class="form-select">
+                            <option value="Surya">Surya</option>
+                            <option value="Samuel Gurudas">Samuel</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn-premium w-100">SAVE</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Mobile Card View (shows on tablet/mobile) -->
+            <div id="sponsor-cards-mobile" class="sponsor-cards-mobile-container mb-4">
+                <!-- Loaded via JS -->
+            </div>
+
+            <!-- Desktop Table View (shows on desktop) -->
             <div class="data-table-container">
                 <table class="data-table">
                     <thead>
